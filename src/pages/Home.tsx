@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import FlightSearchCard from '@/components/FlightSearchCard';
 import FlightCard from '@/components/FlightCard';
-import { Flight, apiService } from '@/lib/api';
+import { Flight, supabaseService } from '@/lib/supabase-service';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 
@@ -20,7 +20,7 @@ const Home = () => {
 
   const loadFlights = async () => {
     try {
-      const flightsData = await apiService.getFlights();
+      const flightsData = await supabaseService.getFlights();
       setFlights(flightsData);
     } catch (error) {
       toast({
@@ -42,7 +42,7 @@ const Home = () => {
   }) => {
     setSearchLoading(true);
     try {
-      const searchResults = await apiService.searchFlights({
+      const searchResults = await supabaseService.searchFlights({
         origin: searchParams.origin,
         destination: searchParams.destination,
         date: searchParams.date,
@@ -105,7 +105,7 @@ const Home = () => {
               ) : (
                 flights.map((flight) => (
                   <FlightCard
-                    key={flight.flightNumber}
+                    key={flight.flight_number}
                     flight={flight}
                     onSelect={handleFlightSelect}
                   />

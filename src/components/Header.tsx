@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { Plane, User, Calendar, Settings, LogOut } from 'lucide-react';
 
 const Header = () => {
-  const { user, logout, isAuthenticated, isAdmin } = useAuth();
+  const { user, profile, logout, isAuthenticated, isAdmin } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -58,14 +58,14 @@ const Header = () => {
                 <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                   <Avatar className="h-10 w-10">
                     <AvatarFallback className="bg-airline-blue text-white">
-                      {user?.firstName?.[0]}{user?.lastName?.[0]}
+                      {profile?.first_name?.[0]}{profile?.last_name?.[0]}
                     </AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <div className="flex flex-col space-y-1 p-2">
-                  <p className="text-sm font-medium leading-none">{user?.firstName} {user?.lastName}</p>
+                  <p className="text-sm font-medium leading-none">{profile?.first_name} {profile?.last_name}</p>
                   <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
                 </div>
                 <DropdownMenuSeparator />

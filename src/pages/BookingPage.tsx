@@ -7,18 +7,18 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import Header from '@/components/Header';
 import { useAuth } from '@/contexts/AuthContext';
-import { Flight, apiService } from '@/lib/api';
+import { Flight, supabaseService } from '@/lib/supabase-service';
 import { useToast } from '@/hooks/use-toast';
 import { Plane, MapPin, Clock, DollarSign, User } from 'lucide-react';
 
 const BookingPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, isAuthenticated } = useAuth();
+  const { user, profile, isAuthenticated } = useAuth();
   const { toast } = useToast();
   
   const flight = location.state?.flight as Flight;
-  const [passengerName, setPassengerName] = useState(user ? `${user.firstName} ${user.lastName}` : '');
+  const [passengerName, setPassengerName] = useState(profile ? `${profile.first_name} ${profile.last_name}` : '');
   const [seatNumber, setSeatNumber] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -54,10 +54,11 @@ const BookingPage = () => {
 
     setLoading(true);
     try {
-      await apiService.createBooking({
-        flightNumber: flight.flightNumber,
-        passengerName,
-        seatNumber: seatNumber || undefined,
+      await supabaseService.createBooking({
+        flight_id: flight.id,
+        passenger_name: passengerName,
+        seat_number: seatNumber || undefined,
+        total_amount: flight.price,
       });
       
       toast({
@@ -105,7 +106,7 @@ const BookingPage = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="text-center">
-                  <h3 className="text-2xl font-bold">{flight.flightNumber}</h3>
+                  <h3 className="text-2xl font-bold">{flight.flight_number}</h3>
                   <p className="text-muted-foreground">{flight.aircraft}</p>
                 </div>
 
@@ -133,7 +134,7 @@ const BookingPage = () => {
                       <Clock className="h-4 w-4 text-muted-foreground" />
                       <span className="font-medium">Departure</span>
                     </div>
-                    <p className="text-sm">{formatDateTime(flight.departureTime)}</p>
+                    <p className="text-sm">{formatDateTime(flight.departure_time)}</p>
                   </div>
 
                   <div>
@@ -141,7 +142,7 @@ const BookingPage = () => {
                       <Clock className="h-4 w-4 text-muted-foreground" />
                       <span className="font-medium">Arrival</span>
                     </div>
-                    <p className="text-sm">{formatDateTime(flight.arrivalTime)}</p>
+                    <p className="text-sm">{formatDateTime(flight.arrival_time)}</p>
                   </div>
 
                   <div>
@@ -202,7 +203,7 @@ const BookingPage = () => {
                     <h4 className="font-semibold mb-2">Booking Summary</h4>
                     <div className="space-y-1 text-sm">
                       <div className="flex justify-between">
-                        <span>Flight ({flight.flightNumber})</span>
+                        <span>Flight ({flight.flight_number})</span>
                         <span>${flight.price}</span>
                       </div>
                       <div className="flex justify-between">

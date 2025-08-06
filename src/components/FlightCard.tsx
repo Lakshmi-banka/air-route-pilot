@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Flight } from '@/lib/api';
+import { Flight } from '@/lib/supabase-service';
 import { Plane, Clock, Users } from 'lucide-react';
 
 interface FlightCardProps {
@@ -37,7 +37,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
   };
 
   const getAvailabilityColor = () => {
-    const percentage = (flight.availableSeats / flight.totalSeats) * 100;
+    const percentage = (flight.available_seats / flight.total_seats) * 100;
     if (percentage > 50) return 'bg-green-100 text-green-800';
     if (percentage > 20) return 'bg-yellow-100 text-yellow-800';
     return 'bg-red-100 text-red-800';
@@ -54,7 +54,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
                   <Plane className="h-5 w-5 text-airline-blue" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-lg">{flight.flightNumber}</h3>
+                  <h3 className="font-semibold text-lg">{flight.flight_number}</h3>
                   <p className="text-sm text-muted-foreground">{flight.aircraft}</p>
                 </div>
               </div>
@@ -68,8 +68,8 @@ const FlightCard: React.FC<FlightCardProps> = ({
               <div>
                 <p className="text-sm text-muted-foreground">From</p>
                 <p className="font-semibold text-xl">{flight.origin}</p>
-                <p className="text-sm">{formatTime(flight.departureTime)}</p>
-                <p className="text-xs text-muted-foreground">{formatDate(flight.departureTime)}</p>
+                <p className="text-sm">{formatTime(flight.departure_time)}</p>
+                <p className="text-xs text-muted-foreground">{formatDate(flight.departure_time)}</p>
               </div>
               
               <div className="text-center">
@@ -90,8 +90,8 @@ const FlightCard: React.FC<FlightCardProps> = ({
               <div className="text-right">
                 <p className="text-sm text-muted-foreground">To</p>
                 <p className="font-semibold text-xl">{flight.destination}</p>
-                <p className="text-sm">{formatTime(flight.arrivalTime)}</p>
-                <p className="text-xs text-muted-foreground">{formatDate(flight.arrivalTime)}</p>
+                <p className="text-sm">{formatTime(flight.arrival_time)}</p>
+                <p className="text-xs text-muted-foreground">{formatDate(flight.arrival_time)}</p>
               </div>
             </div>
 
@@ -99,7 +99,7 @@ const FlightCard: React.FC<FlightCardProps> = ({
               <div className="flex items-center space-x-4">
                 <Badge className={getAvailabilityColor()}>
                   <Users className="h-3 w-3 mr-1" />
-                  {flight.availableSeats} seats left
+                  {flight.available_seats} seats left
                 </Badge>
               </div>
 
