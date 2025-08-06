@@ -52,6 +52,13 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				airline: {
+					red: 'hsl(var(--airline-red))',
+					blue: 'hsl(var(--airline-blue))',
+					gold: 'hsl(var(--airline-gold))',
+					dark: 'hsl(var(--airline-dark))',
+					light: 'hsl(var(--airline-light))',
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
